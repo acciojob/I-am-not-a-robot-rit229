@@ -6,31 +6,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>I'm not a robot</title>
     <link rel="stylesheet" href="styles.css" />
+    <style>
+        img {
+            margin: 10px;
+            border: 5px solid #555;
+            width: 10%;
+        }
+
+        .flex {
+            display: flex;
+            justify-content: center;
+        }
+
+        .selected {
+            border: 5px solid rgb(0, 195, 255);
+        }
+
+        p {
+            text-align: center;
+        }
+
+        button {
+            margin: 20px;
+        }
+    </style>
 </head>
-	<style>
-		img {
-    margin: 10px;
-    border: 5px solid #555;
-    width: 10%;
-}
-
-.flex {
-    display: flex;
-    justify-content: center;
-}
-
-.selected {
-    border: 5px solid rgb(0, 195, 255);
-}
-
-p {
-    text-align: center;
-}
-
-button {
-    margin: 20px;
-}
-	</style>
 <body>
     <main>
         <h3 id="h">Please click on the identical tiles to verify that you are not a robot.</h3>
@@ -39,69 +39,69 @@ button {
         <button id="verify" style="display:none;">Verify</button>
         <p id="result"></p>
     </main>
-    <script src="./script.js">
-		const images = [
-    "https://picsum.photos/id/237/200/300",
-    "https://picsum.photos/seed/picsum/200/300",
-    "https://picsum.photos/200/300?grayscale",
-    "https://picsum.photos/200/300/",
-    "https://picsum.photos/200/300.jpg"
-];
+    <script>
+        const images = [
+            "https://picsum.photos/id/237/200/300",
+            "https://picsum.photos/seed/picsum/200/300",
+            "https://picsum.photos/200/300?grayscale",
+            "https://picsum.photos/200/300/",
+            "https://picsum.photos/200/300.jpg"
+        ];
 
-// Duplicate one random image
-const duplicateImage = images[Math.floor(Math.random() * images.length)];
-const imageSet = [...images, duplicateImage];
+        // Duplicate one random image
+        const duplicateImage = images[Math.floor(Math.random() * images.length)];
+        const imageSet = [...images, duplicateImage];
 
-// Shuffle the images
-function shuffle(array) {
-    for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
-    }
-}
-shuffle(imageSet);
-
-const imageContainer = document.getElementById('image-container');
-
-imageSet.forEach((src) => {
-    const img = document.createElement('img');
-    img.src = src;
-    img.classList.add('image');
-    img.addEventListener('click', () => handleImageClick(img));
-    imageContainer.appendChild(img);
-});
-
-let selectedImages = [];
-
-function handleImageClick(img) {
-    if (selectedImages.length < 2 && !selectedImages.includes(img)) {
-        img.classList.add('selected');
-        selectedImages.push(img);
-        
-        if (selectedImages.length === 2) {
-            document.getElementById('verify').style.display = 'block';
+        // Shuffle the images
+        function shuffle(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
         }
-        document.getElementById('reset').style.display = 'block';
-    }
-}
+        shuffle(imageSet);
 
-document.getElementById('verify').addEventListener('click', () => {
-    const [first, second] = selectedImages;
-    if (first.src === second.src) {
-        document.getElementById('result').innerText = "You are a human. Congratulations!";
-    } else {
-        document.getElementById('result').innerText = "We can't verify you as a human. You selected the non-identical tiles.";
-    }
-    document.getElementById('verify').style.display = 'none';
-});
+        const imageContainer = document.getElementById('image-container');
 
-document.getElementById('reset').addEventListener('click', () => {
-    selectedImages.forEach(img => img.classList.remove('selected'));
-    selectedImages = [];
-    document.getElementById('result').innerText = "";
-    document.getElementById('reset').style.display = 'none';
-    document.getElementById('verify').style.display = 'none';
-});
-	</script>
+        imageSet.forEach((src) => {
+            const img = document.createElement('img');
+            img.src = src;
+            img.classList.add('image');
+            img.addEventListener('click', () => handleImageClick(img));
+            imageContainer.appendChild(img);
+        });
+
+        let selectedImages = [];
+
+        function handleImageClick(img) {
+            if (selectedImages.length < 2 && !selectedImages.includes(img)) {
+                img.classList.add('selected');
+                selectedImages.push(img);
+                
+                if (selectedImages.length === 2) {
+                    document.getElementById('verify').style.display = 'block';
+                }
+                document.getElementById('reset').style.display = 'block';
+            }
+        }
+
+        document.getElementById('verify').addEventListener('click', () => {
+            const [first, second] = selectedImages;
+            if (first.src === second.src) {
+                document.getElementById('result').innerText = "You are a human. Congratulations!";
+            } else {
+                document.getElementById('result').innerText = "We can't verify you as a human. You selected the non-identical tiles.";
+            }
+            document.getElementById('verify').style.display = 'none';
+        });
+
+        document.getElementById('reset').addEventListener('click', () => {
+            selectedImages.forEach(img => img.classList.remove('selected'));
+            selectedImages = [];
+            document.getElementById('result').innerText = "";
+            document.getElementById('reset').style.display = 'none';
+            document.getElementById('verify').style.display = 'none';
+        });
+    </script>
 </body>
 </html>
